@@ -15,3 +15,4 @@
 - CSS Flexbox 復習
 - ChatGPTでGit SSH接続完了
 
+- 2025-06-23 ChatGPTアウトプットなどを記録
