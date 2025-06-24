@@ -1,8 +1,9 @@
 import os
-import openai
+from openai import OpenAI
 from datetime import date
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 today = date.today().isoformat()
 
 prompt = f"""
@@ -16,20 +17,20 @@ prompt = f"""
 – 学習内容2
 """
 
-response = openai.ChatCompletion.create(
+response = client.chat.completions.create(
     model="gpt-4",
     messages=[{"role": "user", "content": prompt}],
     temperature=0.4,
 )
 
-content = response["choices"][0]["message"]["content"].strip()
+content = response.choices[0].message.content.strip()
 
-# 学習していなければ終了
+# 学習していなければスキップ
 if "今日はエンジニア学習をしていませんでした。" in content:
     print("🛑 学習記録がないためスキップします。")
     exit(0)
 
-# nippo.md に追記
+# 追記
 with open("nippo.md", "a") as f:
     f.write("\n" + content + "\n\n")
 
