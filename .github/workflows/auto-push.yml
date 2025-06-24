@@ -1,2 +1,35 @@
-- name: Append nippo entry
-  run: echo "- $(date +%F) 自動追記された日報" >> nippo.md
+name: Auto Generate Nippo
+
+on:
+  schedule:
+    - cron: '30 10 * * *'  # JST 19:30 に対応
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  generate-nippo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install openai
+
+      - name: Generate nippo using ChatGPT
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python3 .github/scripts/generate_nippo.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nippo.md
+          git diff --cached --quiet || git commit -m "🤖 Auto-update nippo on $(date +'%Y-%m-%d')"
+          git push
