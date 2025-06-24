@@ -1,0 +1,2 @@
+- name: Append nippo entry
+  run: echo "- $(date +%F) 自動追記された日報" >> nippo.md
