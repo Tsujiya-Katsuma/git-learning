@@ -32,4 +32,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add nippo.md
           git diff --cached --quiet || git commit -m "🤖 Auto-update nippo on $(date +'%Y-%m-%d')"
-          git push
+          git push origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
