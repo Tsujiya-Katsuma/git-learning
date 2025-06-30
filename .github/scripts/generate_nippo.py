@@ -35,3 +35,7 @@ with open("nippo.md", "a") as f:
     f.write("\n" + content + "\n\n")
 
 print("✅ nippo.md に追記しました")
+
+import subprocess
+subprocess.run(["git", "add", "nippo.md"], check=True)
+
