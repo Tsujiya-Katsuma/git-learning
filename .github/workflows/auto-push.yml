@@ -27,17 +27,15 @@ jobs:
         run: python3 .github/scripts/generate_nippo.py
 
       - name: Commit and push if changed
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  run: |
+    git config user.name "github-actions[bot]"
+    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    git pull origin main --rebase
+    git add nippo.md
+    git commit -m "🔄 Update nippo.md" || echo "No changes to commit"
+    git push origin main
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          # ✅ GITHUB_TOKEN を使った認証付きURLに変更！
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
-
-          git add nippo.md
-          git diff --cached --quiet || git commit -m "🤖 Auto-update nippo on $(date +'%Y-%m-%d')"
-          git push origin HEAD
 
 
