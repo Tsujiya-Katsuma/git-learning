@@ -1,8 +1,8 @@
 name: Auto Generate Nippo
 
 on:
-  schedule:
-    - cron: '30 10 * * *'  # JST 19:30 に対応
+  #schedule:
+    #- cron: '30 10 * * *'  # JST 19:30 に対応
   workflow_dispatch:  # 手動実行も可能
 
 jobs:
